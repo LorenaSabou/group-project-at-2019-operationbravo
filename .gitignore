@@ -1,0 +1,7 @@
+.DS_STORE
+venv/
+gradle/
+.idea/
+*.jpg
+*.weights
+*.cfg
