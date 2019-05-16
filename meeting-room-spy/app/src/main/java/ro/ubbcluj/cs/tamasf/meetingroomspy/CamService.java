@@ -14,6 +14,7 @@ import org.restlet.routing.Router;
 public class CamService extends IntentService {
     private static final String ACTION_START = "ro.ubbcluj.cs.tamasf.meetingroomspy.action.START";
     private static final String ACTION_STOP = "ro.ubbcluj.cs.tamasf.meetingroomspy.action.STOP";
+    private static final String TAG = CamService.class.getSimpleName();
 
     private Component mComponent;
 
@@ -57,7 +58,7 @@ public class CamService extends IntentService {
         try {
             mComponent.start();
         } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), e.toString());
+            Log.e(TAG, e.toString());
         }
     }
 
@@ -65,7 +66,7 @@ public class CamService extends IntentService {
         try {
             mComponent.stop();
         } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), e.toString());
+            Log.e(TAG, e.toString());
         }
     }
 }

@@ -66,6 +66,7 @@ image_server = 'http://192.168.3.2:1332'
 def get_image_for_prediction():
     image_server_rest = image_server + '/rest/image'
     result = requests.get(image_server_rest)
+    result = result.json()
     print(result.json())
     return 'example4.jpg'
 

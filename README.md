@@ -2,10 +2,16 @@ Please use this repository to maintain your work for the team project.
 
 Also please fill the following details:
 
-- Team name:
+- Team name: Operation Bravo
 - Students (SCS username - Name):
+	- tiie2231@scs.ubbcluj.ro - Tamas Florin
+	- svie2228@scs.ubbcluj.ro - Stanila Vlad
+	- taie2233@scs.ubbcluj.ro - Tili Adrian
+	- umie2239 - Ungur Maria
 
 Project idea:
+
+Meeting room monitoring system(provide information on the number persons in the room).
 
 =============
 
