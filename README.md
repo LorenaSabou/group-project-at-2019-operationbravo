@@ -7,7 +7,7 @@ Also please fill the following details:
 	- tiie2231@scs.ubbcluj.ro - Tamas Florin
 	- svie2228@scs.ubbcluj.ro - Stanila Vlad
 	- taie2233@scs.ubbcluj.ro - Tili Adrian
-	- umie2239 - Ungur Maria
+	- umie2239@scs.ubbcluj.ro - Ungur Maria
 
 Project idea:
 
