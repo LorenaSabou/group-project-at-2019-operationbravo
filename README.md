@@ -42,6 +42,8 @@ containing each room and the number if persons for that particular room.
 
 ## Build and install
 
+# PIServer
+
 On Android Studio, click on the "Run" button.
 
 If you prefer to run on the command line, type
@@ -51,7 +53,17 @@ If you prefer to run on the command line, type
 adb shell am start ro.ubbcluj.cs.tamasf.roomspy/.MainActivity
 ```
 
-If you have everything set up correctly, the web page will reveive information from the server.
+If you have everything set up correctly, the server should be sending data to the client.
+
+# Machine learning server
+
+```
+chmod +x get_yolo.sh
+./get_yolo.sh
+python3 server.py
+```
+
+The server should now be running and handling requests from the client.
 
 =============
 
