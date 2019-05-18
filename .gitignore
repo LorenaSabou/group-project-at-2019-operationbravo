@@ -5,3 +5,4 @@ gradle/
 *.jpg
 *.weights
 *.cfg
+__pycache__/

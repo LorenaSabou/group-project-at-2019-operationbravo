@@ -15,17 +15,23 @@ public class CamService extends IntentService {
     private static final String ACTION_START = "ro.ubbcluj.cs.tamasf.meetingroomspy.action.START";
     private static final String ACTION_STOP = "ro.ubbcluj.cs.tamasf.meetingroomspy.action.STOP";
     private static final String TAG = CamService.class.getSimpleName();
+    private static final String SERVICE_NAME = "CamService";
+    private static final int PORT = 1332;
+
+    private static final String IMAGE_ROUTE = "/image";
 
     private Component mComponent;
 
     public CamService() {
-        super("CamService");
+        super(SERVICE_NAME);
         Engine.getInstance().getRegisteredServers().clear();
         Engine.getInstance().getRegisteredServers().add(new HttpServerHelper(null));
         mComponent = new Component();
-        mComponent.getServers().add(Protocol.HTTP, 1332);
+        mComponent.getServers().add(Protocol.HTTP, PORT);
         Router router = new Router(mComponent.getContext().createChildContext());
-        router.attach("/image", ImageResource.class);
+
+        router.attach(IMAGE_ROUTE, ImageResource.class);
+
         mComponent.getDefaultHost().attach("/rest", router);
     }
 

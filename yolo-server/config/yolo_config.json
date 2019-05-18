@@ -1,0 +1,5 @@
+{
+  "weights_path": "yolov3-spp.weights",
+  "config_path": "yolov3-spp.cfg",
+  "labels_path": "coco.names"
+}
