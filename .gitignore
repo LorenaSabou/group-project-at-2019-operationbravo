@@ -2,7 +2,7 @@
 venv/
 gradle/
 .idea/
-*.jpg
+examples/
 *.weights
 *.cfg
 __pycache__/
