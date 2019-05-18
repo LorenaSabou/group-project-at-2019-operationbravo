@@ -67,13 +67,13 @@ public class MainActivity extends Activity {
                 captureImageLoop();
             }
         });
-        //mCamera.takePicture();
+
         imageCaptureThread.start();
-        //CamService.startServer(this);
+        CamService.startServer(this);
     }
 
     private void captureImageLoop() {
-        while(true) {
+        do {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -86,8 +86,9 @@ public class MainActivity extends Activity {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 Log.e(TAG, e.getMessage());
+                break;
             }
-        }
+        }while(true);
     }
 
     private ImageReader.OnImageAvailableListener mOnImageAvailableListener =

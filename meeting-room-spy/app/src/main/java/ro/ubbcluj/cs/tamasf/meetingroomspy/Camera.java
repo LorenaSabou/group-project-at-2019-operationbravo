@@ -55,7 +55,7 @@ public class Camera {
             Log.e(TAG, "No cameras found");
             return;
         }
-        String id = camIds[1];
+        String id = camIds[0];
         Log.d(TAG, "Using camera id " + id);
 
         // Initialize the image processor
