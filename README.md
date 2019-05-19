@@ -34,7 +34,8 @@ An example of response from the master server is as follows:
     "rooms": [
         {
             "num_persons": 1,
-            "room_name": "Room #1"
+            "room_name": "Room #1",
+			"image": "base64 string"
         }
     ]
 }
