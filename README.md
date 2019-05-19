@@ -36,7 +36,8 @@ An example of response from the master server is as follows:
 ```
 
 ## Client
-The client is provided as a web page created using React and display the number of persons for each available room.
+The client is provided as a web page created using React and displays the number of persons for each available room.
+The user can also view a 'live feed' of the model's bounding box detections by accessing the 'view feed' functionality.
 
 ![Client web-page](client.png)
 
@@ -66,14 +67,36 @@ adb shell am start ro.ubbcluj.cs.tamasf.roomspy/.MainActivity
 If you have everything set up correctly, the server should be sending data to the client.
 
 # Machine learning server
+First make sure that all of the necessary dependencies are installed by running the following command:
 
+```
+pip install -r requirements.txt
+```
+
+Since the server is dependent on the machine learning model we first need to retrieve it using the helper script:
 ```
 chmod +x get_yolo.sh
 ./get_yolo.sh
+```
+
+Now we can start the server by running the following command:
+
+```
 python3 server.py
 ```
 
 The server should now be running and handling requests from the client.
+
+# Client
+Install all the necessary packages:
+```
+npm install
+```
+
+Run the project:
+```
+npm start
+```
 
 =============
 
