@@ -16,6 +16,11 @@ This application demonstrates how to use a camera in order to detect the number 
 The application is provided as a web page where the user is provided with the information.
 The web page communicates with a machine learning server via REST and outputs the received prediction.
 
+## Demo
+![PIR motion sensor and LED](demo.gif)
+
+The full video is also available for download(please see demo.mp4).
+
 ## Slave (PIServer)
 The PI server is used in order to retrieve screenshots from a particular meeting room.
 The images are used by the machine learning model in order to make a prediction regarding
