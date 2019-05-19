@@ -10,37 +10,16 @@ class PageContent extends React.Component{
         super(props);
         this.state = {
             rooms : [
-                {
-                    roomId: 1,
-                    roomName: "Edison",
-                    num_persons: 5
-                },
-                {
-                    roomId: 2,
-                    roomName: "Newton",
-                    num_persons: 7
-                },
-                {
-                    roomId: 3,
-                    roomName: "Babbage",
-                    num_persons: 8
-                },
-                {
-                    roomId: 4,
-                    roomName: "Tesla",
-                    num_persons: 4
-                }
             ]
         };
         this.recheck = this.recheck.bind(this);
     }
 
     componentDidMount() {
-        axios.get('https://reqres.in/api/users?page=2')
+        axios.get('http://localhost:1331/predict')
             .then(res => {
-                const num_persons = res.data.total;
-                this.setState({ num_persons: num_persons });
-            })
+                this.setState({rooms: res.data['rooms']});
+        });
     }
 
     findPositionById(roomId) {
@@ -49,34 +28,32 @@ class PageContent extends React.Component{
 
     recheck(roomId){
         const pos = this.findPositionById(roomId);
-        this.setState(oldState => {
-            let rooms = oldState.rooms.slice();
-            let copy = Object.assign({}, rooms[pos]);
-            copy.num_persons+=1;
-
-            rooms[pos] = copy;
-
-            return {
-                rooms: rooms
-            };
+        axios.get('http://localhost:1331/predict_room/' + roomId).then(room => {
+            this.setState(oldState => {
+                let rooms = oldState.rooms.slice();
+                let copy = Object.assign({}, rooms[pos]);
+                copy.num_persons = room.num_persons;
+                rooms[pos] = copy;
+                return {
+                    rooms: rooms
+                };
+            });
         });
     }
-
-
 
     render(){
 
         const columns = [
             {
                 Header: "Room Id",
-                accessor: "roomId",
+                accessor: "id",
                 style: {
                     textAlign: "center"
                 }
             },
             {
                 Header: "Room Name",
-                accessor: "roomName",
+                accessor: "room_name",
                 style: {
                     textAlign: "center"
                 }
@@ -93,7 +70,7 @@ class PageContent extends React.Component{
                 Cell: props =>{
                     return (<button type="button"
                                     onClick={() => {
-                                           this.recheck(props.original.roomId)
+                                           this.recheck(props.original.id)
                                         }}>Recheck</button>)
                 },
                 style: {
@@ -104,7 +81,6 @@ class PageContent extends React.Component{
         ];
 
         const data = this.state.rooms;
-
         return <div>
             <ReactTable
                 columns = {columns}
