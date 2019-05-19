@@ -69,25 +69,35 @@ class Yolo(object):
 
         return False
 
-    def _get_num_person_predictions(self, layer_outputs) -> int:
+    def _get_bounding_box_from_detection(self, detection) -> Tuple[int, int, int, int]:
+        # scale bounding box relative to the image size
+        box = detection[0:4] * np.array([self._IMAGE_WIDTH, self._IMAGE_HEIGHT, self._IMAGE_WIDTH, self._IMAGE_HEIGHT])
+        (centerX, centerY, width, height) = box.astype("int")
+
+        x = int(centerX - (width / 2))
+        y = int(centerY - (height / 2))
+
+        return x, y, int(width), int(height)
+
+    def _get_person_bounding_boxes(self, layer_outputs) -> List[Tuple[int,int,int,int]]:
         """
         Returns the number of persons from the layer outputs.
         :param layer_outputs: the output layer predictions.
         :return: the number of persons.
         """
-        num_persons = 0
-
+        bounding_boxes = []
         for output in layer_outputs:
             person_detections = [detection for detection in output if self._is_person_detection(detection)]
-            num_persons += len(person_detections)
+            current_bounding_boxes = [self._get_bounding_box_from_detection(d) for d in person_detections]
+            bounding_boxes.extend(current_bounding_boxes)
 
-        return num_persons
+        return bounding_boxes
 
-    def predict(self, image: Image) -> int:
+    def predict(self, image: Image) -> List[Tuple[int, int, int, int]]:
         """
-        Predict the number of persons that are present in an image.
+        Predict bounding boxes for the persons in the image.
         :param image: the PIL image
-        :return: the number of persons found in the image.
+        :return: the bounding boxes for the persons in the image.
         """
         # convert the PIL image to a CV image
         image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
@@ -105,5 +115,5 @@ class Yolo(object):
         layer_outputs = self._model.forward(layer_names)
 
         # the output is the number of persons found in the picture
-        return self._get_num_person_predictions(layer_outputs)
+        return self._get_person_bounding_boxes(layer_outputs)
 

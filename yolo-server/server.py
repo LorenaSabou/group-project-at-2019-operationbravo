@@ -1,5 +1,5 @@
 import json
-from typing import Tuple
+from typing import Tuple, List, Optional
 
 from flask import Flask, Response
 from flask_cors import CORS
@@ -8,7 +8,8 @@ import requests
 
 from config.config import read_config
 from ml.yolo import Yolo
-from util.image import image_from_json
+from util.encoding import encode_image_base64
+from util.image import image_from_json, draw_rectangles
 
 app = Flask(__name__)
 CORS(app)
@@ -33,19 +34,19 @@ def get_room_image_for_prediction(room_address) -> Tuple[str, any]:
     return result['room_name'], None
 
 
-def find_room_address_by_id(r_id):
+def find_room_address_by_id(r_id) -> Optional[str]:
     for room_id, room_address in server_config["rooms"].items():
         if room_id == r_id:
             return room_address
     return None
 
 
-def get_prediction_from_image(image):
-    num_persons = 0
+def get_prediction_from_image(image) -> List[Tuple[int, int, int, int]]:
+    bounding_boxes = []
     if image is not None:
-        num_persons = model.predict(image)
+        bounding_boxes = model.predict(image)
 
-    return num_persons
+    return bounding_boxes
 
 
 @app.route('/predict', methods=['GET'])
@@ -57,8 +58,11 @@ def make_prediction() -> Response:
     results = []
     for room_id, room_address in server_config["rooms"].items():
         room_name, prediction_image = get_room_image_for_prediction(room_address)
-        num_persons = get_prediction_from_image(prediction_image)
-        results.append({'num_persons': num_persons, 'room_name': room_name, "id": room_id})
+        bounding_boxes = get_prediction_from_image(prediction_image)
+        predicted_image = encode_image_base64(draw_rectangles(prediction_image, bounding_boxes))
+        results.append(
+            {'num_persons': len(bounding_boxes), 'room_name': room_name, "id": room_id, "image": predicted_image}
+        )
 
     resp = json.dumps({"rooms": results})
     resp = Response(response=resp,
@@ -72,8 +76,9 @@ def make_prediction() -> Response:
 def predict_for_room(room_id) -> Response:
     room_address = find_room_address_by_id(r_id=room_id)
     room_name, prediction_image = get_room_image_for_prediction(room_address=room_address)
-    num_persons = get_prediction_from_image(prediction_image)
-    resp = {'num_persons': num_persons, 'room_name': room_name, "id": room_id}
+    bounding_boxes = get_prediction_from_image(prediction_image)
+    predicted_image = encode_image_base64(draw_rectangles(prediction_image, bounding_boxes))
+    resp = {'num_persons': len(bounding_boxes), 'room_name': room_name, "id": room_id, "image": predicted_image}
     resp = json.dumps(resp)
     resp = Response(response=resp,
                     status=200,
