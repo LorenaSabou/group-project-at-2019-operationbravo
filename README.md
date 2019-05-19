@@ -16,19 +16,29 @@ This application demonstrates how to use a camera in order to detect the number 
 The application is provided as a web page where the user is provided with the information.
 The web page communicates with a machine learning server via REST and outputs the received prediction.
 
-## PIServer
+## Slave (PIServer)
 The PI server is used in order to retrieve screenshots from a particular meeting room.
 The images are used by the machine learning model in order to make a prediction regarding
 the number of persons in the room.
 
-## Machine Learning model server
-The machine learning server retrieves images from the PIServer and predicts the number
-of persons from that image.
-The server communicates with the client via REST calls.
+## Master (Machine learning model)
+The master server responds to the rest request from the client, returning the number of persons for each available room.
+An example of response from the master server is as follows:
+```
+{
+    "rooms": [
+        {
+            "num_persons": 1,
+            "room_name": "Room #1"
+        }
+    ]
+}
+```
 
 ## Client
-The client is provided as a web page created using React and provides a table 
-containing each room and the number if persons for that particular room.
+The client is provided as a web page created using React and display the number of persons for each available room.
+
+![Client web-page](client.png)
 
 ## Pre-requisites
 

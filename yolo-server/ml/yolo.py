@@ -94,7 +94,9 @@ class Yolo(object):
 
         layer_names = self._model.getLayerNames()
         layer_names = [layer_names[i[0] - 1] for i in self._model.getUnconnectedOutLayers()]
-        blob = cv2.dnn.blobFromImage(image, 1 / 255.0, (self._IMAGE_WIDTH, self._IMAGE_HEIGHT), swapRB=True, crop=False)
+        size = (self._IMAGE_WIDTH, self._IMAGE_HEIGHT)
+        image = cv2.resize(image, size)
+        blob = cv2.dnn.blobFromImage(image, 1 / 255.0, size=size, swapRB=True, crop=False)
 
         # set the input for the yolo model
         self._model.setInput(blob)

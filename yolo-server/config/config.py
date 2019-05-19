@@ -2,7 +2,7 @@ import json
 from typing import Dict
 
 
-def read_config(config_path: str) -> Dict[str, str]:
+def read_config(config_path: str) -> Dict[str, any]:
     """
     Reads a .json config from a given path.
     :param config_path: the config path
