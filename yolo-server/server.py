@@ -59,7 +59,7 @@ def make_prediction() -> Response:
     for room_id, room_address in server_config["rooms"].items():
         room_name, prediction_image = get_room_image_for_prediction(room_address)
         bounding_boxes = get_prediction_from_image(prediction_image)
-        predicted_image = encode_image_base64(draw_rectangles(prediction_image, bounding_boxes))
+        predicted_image = encode_image_base64(draw_rectangles(prediction_image, bounding_boxes, size=model.SIZE))
         results.append(
             {'num_persons': len(bounding_boxes), 'room_name': room_name, "id": room_id, "image": predicted_image}
         )
@@ -77,7 +77,7 @@ def predict_for_room(room_id) -> Response:
     room_address = find_room_address_by_id(r_id=room_id)
     room_name, prediction_image = get_room_image_for_prediction(room_address=room_address)
     bounding_boxes = get_prediction_from_image(prediction_image)
-    predicted_image = encode_image_base64(draw_rectangles(prediction_image, bounding_boxes))
+    predicted_image = encode_image_base64(draw_rectangles(prediction_image, bounding_boxes, size=model.SIZE))
     resp = {'num_persons': len(bounding_boxes), 'room_name': room_name, "id": room_id, "image": predicted_image}
     resp = json.dumps(resp)
     resp = Response(response=resp,

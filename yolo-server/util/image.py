@@ -13,10 +13,16 @@ def image_from_json(json_data: Dict[str, str]) -> Image:
     return image_data
 
 
-def draw_rectangles(image: Image, rects: List[Tuple[int, int, int, int]]):
-    for rect in rects:
+def draw_rectangles(image: Image, rects: List[Tuple[int, int, int, int]], size=None):
+    if size:
+        image = image.resize(size=size)
+
+    outline_colors = ['red', 'orange', 'yellow', 'green', 'blue',
+                      'purple', 'brown', 'magenta', 'tan', 'cyan']
+    for index, rect in enumerate(rects):
         x, y, w, h = rect
         draw = ImageDraw.Draw(image)
-        draw.rectangle(((x, y), (x + w, y + h)), outline="green")
+        outline_color = outline_colors[index % len(outline_colors)]
+        draw.rectangle(((x, y), (x + w, y + h)), outline=outline_color)
 
     return image
